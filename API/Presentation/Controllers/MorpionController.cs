@@ -25,6 +25,13 @@ namespace MorpionAPI.Presentation.Controllers
             return Ok();
         }
 
+        [HttpPost("InputMoveRandom")]
+        public IActionResult SetInputRandomMoveOnBoard(InputRandomMoveRequest inputMove)
+        {
+            _board.SetRandomMove(inputMove.Symbol);
+            return Ok();
+        }
+
         [HttpGet("Board")]
         public ActionResult<List<List<char>>> GetBoard()
         {
