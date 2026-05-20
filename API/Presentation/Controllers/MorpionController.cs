@@ -25,10 +25,31 @@ namespace MorpionAPI.Presentation.Controllers
             return Ok();
         }
 
-        [HttpPost("InputMoveRandom")]
+        [HttpPost("InputRandomMove")]
         public IActionResult SetInputRandomMoveOnBoard(InputRandomMoveRequest inputMove)
         {
             _board.SetRandomMove(inputMove.Symbol);
+            return Ok();
+        }
+
+        [HttpPost("InputRandomMovesUntilGameEnds")]
+        public IActionResult SetInputRandomMoveOnBoard(InputRandomMovesUntilGameEndsRequest inputMove)  
+        {
+            char playerStart = Random.Shared.Next(2) == 0
+                ? inputMove.SymbolPlayer1
+                : inputMove.SymbolPlayer2;
+            
+            char currentSymbol = playerStart;
+
+            while (!_board.CheckWinner(out _) && !_board.IsBoardFull())
+            {
+                _board.SetRandomMove(currentSymbol);
+
+                currentSymbol = currentSymbol == inputMove.SymbolPlayer1
+                    ? inputMove.SymbolPlayer2
+                    : inputMove.SymbolPlayer1;
+            }
+
             return Ok();
         }
 
@@ -46,5 +67,12 @@ namespace MorpionAPI.Presentation.Controllers
         {
             return Ok(_board.BoardState);
         }
+
+        //[HttpGet("CheckWinner")]
+        //public ActionResult<Boolean> CheckWinner()
+        //{
+        //  if (_board.CheckWinner(out char symbol)) { return Ok(symbol); }
+        //  return Ok();
+        //}  
     }
 }
