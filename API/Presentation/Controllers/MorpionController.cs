@@ -5,7 +5,7 @@ using MorpionAPI.Presentation.DTOs;
 
 namespace MorpionAPI.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MorpionController : ControllerBase
     {
@@ -32,6 +32,12 @@ namespace MorpionAPI.Presentation.Controllers
            var formatted2 = string.Join("\n-+-+-\n", formatted);
 
            return Ok(formatted2);
+        }
+
+        [HttpGet("BoardState")]
+        public ActionResult<List<List<char>>> GetBoardState()
+        {
+            return Ok(_board.BoardState);
         }
     }
 }
